@@ -5,7 +5,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { Link } from '@material-ui/core';
 
-
 const useStyles = makeStyles((theme) => ({
     logo: {
         height: 45,
@@ -25,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Header({ tab, handleTabChange }) {
+export default function Header() {
     const classes = useStyles();
 
     return (

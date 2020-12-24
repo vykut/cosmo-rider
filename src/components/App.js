@@ -4,7 +4,6 @@ import { Redirect, Route } from "react-router-dom";
 import Home from "./HomeComponents/Home";
 import LoginLogic from "./LoginComponents/LoginLogic";
 import { BrowserRouter as Router } from 'react-router-dom';
-import Header from "./HeaderComponents/Header";
 
 function AuthIsLoaded({ children }) {
   const auth = useSelector(state => state.firebase.auth)
@@ -44,7 +43,6 @@ function App() {
       <AuthIsLoaded>
         <Router>
           <PrivateRoute path='/acasa'>
-            <Header />
             <Home />
           </PrivateRoute>
           <Route path='/login'>

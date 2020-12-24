@@ -93,8 +93,9 @@ ReactDOM.render(
         <ReactReduxFirebaseProvider {...rrfProps} >
           <SnackbarProvider
             maxSnack={5}
+
           // classes={{
-          //   variantSuccess: styles.success,
+          //   variantSuccess: { backgroundColor: '#23adae', },
           //   variantError: styles.error,
           //   variantInfo: styles.info,
           //   variantWarning: styles.warning,
