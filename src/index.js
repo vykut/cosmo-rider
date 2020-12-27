@@ -11,7 +11,7 @@ import { rootReducer } from './redux/reducers/firebaseReducers'
 import { Provider } from 'react-redux';
 import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 import { createFirestoreInstance } from 'redux-firestore'
-import { createMuiTheme, makeStyles, responsiveFontSizes, ThemeProvider } from '@material-ui/core';
+import { createMuiTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
 import { DialogProvider } from './contexts/DialogContext';
 
