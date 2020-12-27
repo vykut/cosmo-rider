@@ -24,7 +24,6 @@ export default function SignIn({ setAlert, dispatchAction, isCreateAccountDisabl
     const classes = useStyles();
     const firebase = useFirebase();
     const history = useHistory()
-    const functions = firebaseFunctions
 
     const [form, setForm] = useState({})
     const [loading, setLoading] = useState(false)
@@ -40,12 +39,17 @@ export default function SignIn({ setAlert, dispatchAction, isCreateAccountDisabl
                 email: form.email.trim(),
                 password: form.password.trim()
             })
-            functions.httpsCallable('adminFunctions-addAdmin')({ email: form.email.trim() })
-            setAlert({ severity: 'success', message: 'Te-ai conectat cu succes.' })
-            timeout(500)
-                .then(() => {
-                    history.push('/acasa')
-                })
+            let token = await firebase.auth().currentUser.getIdTokenResult()
+            if (token.claims.admin || token.claims.rider) {
+                setAlert({ severity: 'success', message: 'Te-ai conectat cu succes.' })
+                timeout(500)
+                    .then(() => {
+                        history.push('/acasa')
+                    })
+            } else {
+                setAlert({ severity: 'error', message: 'Nu aveți drepturile necesare pentru a accesa această pagină' })
+                firebase.logout()
+            }
         } catch (error) {
             setAlert({ severity: 'error', message: error.message })
         }

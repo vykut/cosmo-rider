@@ -1,13 +1,22 @@
 import { useSelector } from "react-redux";
 import { isEmpty, isLoaded } from "react-redux-firebase";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import Home from "./HomeComponents/Home";
+import OrdersLogic from "./HomeComponents/OrdersLogic";
 import LoginLogic from "./LoginComponents/LoginLogic";
 import { BrowserRouter as Router } from 'react-router-dom';
+import Header from "./HeaderComponents/Header";
+import OrderDetails from "./HomeComponents/OrderDetails";
+import ProductPage from "./HomeComponents/ProductPage";
+import OrdersView from "./HomeComponents/OrdersView";
+import AccountOverview from "./AccountComponents/AccountOverview";
+
 
 function AuthIsLoaded({ children }) {
   const auth = useSelector(state => state.firebase.auth)
-  if (!isLoaded(auth)) return <></>;
+  if (!isLoaded(auth)) {
+    return <></>;
+  }
   return children
 }
 
@@ -20,7 +29,7 @@ function PrivateRoute({ children, ...rest }) {
     <Route
       {...rest}
       render={({ location }) =>
-        isLoaded(auth) && !isEmpty(auth) ? (
+        !isEmpty(auth) ? (
           children
         ) : (
             <Redirect
@@ -42,12 +51,29 @@ function App() {
     <>
       <AuthIsLoaded>
         <Router>
-          <PrivateRoute path='/acasa'>
-            <Home />
-          </PrivateRoute>
-          <Route path='/login'>
-            <LoginLogic />
-          </Route>
+          <Header />
+          <Switch>
+            {/* <PrivateRoute path='/acasa'> */}
+            {/* <Home /> */}
+            {/* <Redirect to='/comenzi' /> */}
+            {/* </PrivateRoute> */}
+            <PrivateRoute exact path='/produs/:productID'>
+              <ProductPage />
+            </PrivateRoute>
+            <PrivateRoute exact path='/comenzi/:orderID/detalii'>
+              <OrderDetails />
+            </PrivateRoute>
+            <PrivateRoute path='/comenzi'>
+              <OrdersView />
+            </PrivateRoute>
+            <PrivateRoute path='/contul-meu'>
+              <AccountOverview />
+            </PrivateRoute>
+            <Route path='/login'>
+              <LoginLogic />
+            </Route>
+            <Redirect to='/comenzi' />
+          </Switch>
         </Router>
       </AuthIsLoaded>
     </>

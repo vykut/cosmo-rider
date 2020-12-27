@@ -13,6 +13,7 @@ import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 import { createFirestoreInstance } from 'redux-firestore'
 import { createMuiTheme, makeStyles, responsiveFontSizes, ThemeProvider } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
+import { DialogProvider } from './contexts/DialogContext';
 
 const app = firebase.initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -33,7 +34,7 @@ firebase.firestore()
 const rrfConfig = {
   userProfile: "users",
   useFirestoreForProfile: true,
-
+  enableClaims: true,
 };
 
 const initialState = {};
@@ -101,8 +102,10 @@ ReactDOM.render(
           //   variantWarning: styles.warning,
           // }}
           >
-            <CssBaseline />
-            <App />
+            <DialogProvider>
+              <CssBaseline />
+              <App />
+            </DialogProvider>
           </SnackbarProvider>
         </ReactReduxFirebaseProvider>
       </Provider>
