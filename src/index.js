@@ -92,16 +92,7 @@ ReactDOM.render(
     <ThemeProvider theme={cosmoTheme}>
       <Provider store={store} >
         <ReactReduxFirebaseProvider {...rrfProps} >
-          <SnackbarProvider
-            maxSnack={5}
-
-          // classes={{
-          //   variantSuccess: { backgroundColor: '#23adae', },
-          //   variantError: styles.error,
-          //   variantInfo: styles.info,
-          //   variantWarning: styles.warning,
-          // }}
-          >
+          <SnackbarProvider maxSnack={5} >
             <DialogProvider>
               <CssBaseline />
               <App />
