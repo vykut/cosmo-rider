@@ -109,7 +109,7 @@ export default function SignIn({ setAlert, dispatchAction, isCreateAccountDisabl
                             disabled={loading}
                         >
                             Intră în cont
-                </Button>
+                        </Button>
                     </Grid>
                     <Grid item>
                         <GoogleButton
