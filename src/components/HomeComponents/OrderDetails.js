@@ -289,7 +289,7 @@ export default function OrderDetails() {
         )
     }
 
-    function OrderTotal({ totalPrice }) {
+    function OrderTotal({ totalPrice, deliveryPrice }) {
         return (
             <>
                 <Grid item className={classes.paper}>
@@ -316,7 +316,7 @@ export default function OrderDetails() {
                                         Cost livrare
                                     </TableCell>
                                     <TableCell align='right'>
-                                        RON 10
+                                        RON {deliveryPrice}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
@@ -324,7 +324,7 @@ export default function OrderDetails() {
                                         Total
                                     </TableCell>
                                     <TableCell align='right' variant='head'>
-                                        RON {(totalPrice + 10).toFixed(2)}
+                                        RON {(totalPrice + deliveryPrice).toFixed(2)}
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
@@ -397,11 +397,6 @@ export default function OrderDetails() {
                             </Button>
                         </ButtonGroup>
                     </Grid>}
-                {/* {state === 'delivered' && <Grid item>
-                    <Button onClick={acceptOrder} color='primary' variant='contained'>
-                        Acceptă comanda
-                    </Button>
-                </Grid>} */}
             </Grid>
         )
     }
@@ -413,7 +408,7 @@ export default function OrderDetails() {
                 {user.data && address.data && <OrderCustomerDetails user={user} address={address} />}
                 {productsInOrder.length && <OrderProducts productsInOrder={productsInOrder} />}
                 {order.data.notes && <OrderNotes notes={order.data.notes} />}
-                <OrderTotal totalPrice={order.data.totalPrice} />
+                <OrderTotal totalPrice={order.data.totalPrice} deliveryPrice={order.data.deliveryPrice || 10} />
                 <OrderActions orderID={order.id} state={order.data.state} />
             </OrdersContainer>}
             {isLoading && <LinearProgress />}

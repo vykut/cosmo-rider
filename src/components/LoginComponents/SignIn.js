@@ -1,6 +1,6 @@
 import { Button, Container, Grid, Link, makeStyles, TextField } from '@material-ui/core';
 import React, { useState } from 'react'
-import { useFirebase } from "react-redux-firebase";
+import { useFirebase, useFirestore } from "react-redux-firebase";
 import { actionTypes, timeout } from '../../utils/utils';
 import GoogleButton from 'react-google-button'
 import { Redirect } from 'react-router-dom';
@@ -23,6 +23,7 @@ export const useStyles = makeStyles((theme) => ({
 export default function SignIn({ setAlert, dispatchAction, isCreateAccountDisabled = false }) {
     const classes = useStyles();
     const firebase = useFirebase();
+    const firestore = useFirestore()
     const history = useHistory()
 
     const [form, setForm] = useState({})
@@ -39,16 +40,19 @@ export default function SignIn({ setAlert, dispatchAction, isCreateAccountDisabl
                 email: form.email.trim(),
                 password: form.password.trim()
             })
-            let token = await firebase.auth().currentUser.getIdTokenResult()
-            if (token.claims.admin || token.claims.rider) {
+            const credentials = await firebase.login({
+                email: form.email.trim().toLowerCase(),
+                password: form.password.trim()
+            })
+            const uid = credentials.user.user.uid
+            const user = await firestore.collection('users').doc(uid).get()
+            if (user.data().role === 'rider' || user.data().role === 'admin') {
                 setAlert({ severity: 'success', message: 'Te-ai conectat cu succes.' })
-                timeout(500)
-                    .then(() => {
-                        history.push('/acasa')
-                    })
+                await timeout(500)
+                history.push('/acasa/')
             } else {
                 setAlert({ severity: 'error', message: 'Nu aveți drepturile necesare pentru a accesa această pagină' })
-                firebase.logout()
+                await firebase.logout()
             }
         } catch (error) {
             setAlert({ severity: 'error', message: error.message })

@@ -46,7 +46,7 @@ export default function AccountOverview() {
             <Grid container direction='column' style={{ padding: 16 }}>
                 <Grid container item justify='space-between'>
                     <Grid item>
-                        <Typography variant='h3' component='div' className={classes.infoTextColor}>
+                        <Typography variant='h3' component='div'>
                             <Box fontWeight='fontWeightBold'>
                                 Contul tău
                         </Box>

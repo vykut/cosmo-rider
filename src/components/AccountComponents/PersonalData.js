@@ -42,7 +42,7 @@ export default function PersonalData() {
     const functions = firebaseFunctions
     const { enqueueSnackbar } = useSnackbar()
 
-    const [enabled, setEnabled] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [userData, setUserData] = useState({})
 
     //fetch userData
@@ -65,28 +65,10 @@ export default function PersonalData() {
         })
     }
 
-    const handleClick = (type) => async (e) => {
-        switch (type) {
-            case 'update':
-                setEnabled(true)
-                return
-            case 'cancel':
-                setUserData({
-                    email: profile.email,
-                    firstName: profile.firstName,
-                    lastName: profile.lastName,
-                    phone: profile.phone,
-                })
-                return setEnabled(false)
-            default:
-                return setEnabled(false)
-        }
-    }
-
     const updateUserData = async (e) => {
         e.preventDefault()
         // call firestore db
-        setEnabled(false)
+        setIsLoading(true)
         try {
             let { data } = await functions.httpsCallable('editPersonalData')({ firstName: userData.firstName, lastName: userData.lastName, phone: userData.phone })
             if (data.result)
@@ -95,7 +77,9 @@ export default function PersonalData() {
                 enqueueSnackbar(data.error, { variant: 'error' })
         } catch (err) {
             console.log(err)
-            setEnabled(true)
+
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -104,7 +88,7 @@ export default function PersonalData() {
             <form onSubmit={updateUserData}>
                 <Grid container direction='column' spacing={2}>
                     <Grid item>
-                        <Typography variant='h6' className={classes.infoTextColor}>
+                        <Typography variant='h6'>
                             Date personale
                             </Typography>
                     </Grid>
@@ -132,7 +116,7 @@ export default function PersonalData() {
                             fullWidth
                             key='fname'
                             autoComplete='fname'
-                            disabled={!enabled}
+                            disabled={isLoading}
                         />
                     </Grid>
                     <Grid item>
@@ -147,7 +131,7 @@ export default function PersonalData() {
                             fullWidth
                             key='lname'
                             autoComplete='lname'
-                            disabled={!enabled}
+                            disabled={isLoading}
                         />
                     </Grid>
                     <Grid item>
@@ -161,30 +145,16 @@ export default function PersonalData() {
                             variant="outlined"
                             key='phone'
                             autoComplete='tel'
-                            disabled={!enabled}
+                            disabled={isLoading}
                             fullWidth
                         />
                     </Grid>
                     <Grid container item justify='flex-end'>
-                        {enabled ?
-                            (<>
-                                <Grid item>
-                                    <ButtonGroup>
-                                        <Button onClick={handleClick("cancel")} id='cancel' className={classes.errorButtonColor} variant='contained' startIcon={<CloseIcon />}>
-                                            Anulează
-                                        </Button>
-                                        <Button id='save' type='submit' color='primary' variant='contained' startIcon={<SaveIcon />}>
-                                            Salvează
-                                        </Button>
-                                    </ButtonGroup>
-                                </Grid>
-                            </>)
-                            :
-                            (<Grid item>
-                                <Button onClick={handleClick("update")} id='update' className={classes.infoButtonColor} variant='contained' startIcon={<UpdateIcon />}>
-                                    Actualizează datele
-                                </Button>
-                            </Grid>)}
+                        <Grid item>
+                            <Button id='save' type='submit' color='primary' variant='contained' startIcon={<SaveIcon />}>
+                                Actualizează datele
+                            </Button>
+                        </Grid>
                     </Grid>
                 </Grid>
             </form>
