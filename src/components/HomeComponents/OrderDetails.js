@@ -5,6 +5,7 @@ import { firebaseFunctions, firestoreDB } from '../..'
 import OrdersContainer from './OrdersContainer'
 import { useDialog } from '../../contexts/DialogContext'
 import { useSnackbar } from 'notistack'
+import MapComponent from '../AuxiliaryComponents/MapComponent'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -188,6 +189,9 @@ export default function OrderDetails() {
                             </Typography>
                         </Grid>}
                     </Grid>
+                </Grid>
+                <Grid item>
+                    <MapComponent address={address} />
                 </Grid>
             </>
         )
