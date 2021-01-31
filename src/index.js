@@ -30,6 +30,7 @@ export const firestoreDB = app.firestore()
 export const firebaseFunctions = app.functions('europe-west1')
 
 firebase.firestore()
+firebase.analytics();
 
 const rrfConfig = {
   userProfile: "users",
